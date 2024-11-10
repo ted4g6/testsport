@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>قنوات بي إن سبورت</title>
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             display: flex;
             flex-direction: column;
@@ -15,6 +21,7 @@
             background-image: url('https://www.ahaleel.com/uploads/posts/9690915_vb7Cn6Cv16795705725085140.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* لتثبيت الخلفية */
         }
         .channels-container {
             display: grid;
@@ -23,9 +30,7 @@
             width: 90%;
             max-width: 800px;
             margin: 40px auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8); /* خلفية شفافة */
-            border-radius: 8px;
+            background: none; /* إزالة أي خلفية بيضاء */
         }
         .channel-icon {
             display: flex;
@@ -34,12 +39,12 @@
             cursor: pointer;
             transition: transform 0.3s ease;
             text-align: center;
+            background: none; /* إزالة الخلفية */
         }
         .channel-icon img {
             width: 80px;
             height: 80px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
         .channel-icon img:hover {
@@ -49,26 +54,53 @@
             margin-top: 8px;
             font-size: 14px;
             color: #4b0082;
+            background: none; /* إزالة الخلفية */
+        }
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 30px;
+            display: none;
+            background: none; /* إزالة الخلفية */
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
 </head>
 <body>
     <div class="channels-container">
         <!-- قناة 1 -->
-        <div class="channel-icon" onclick="openChannel('https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8?checkedby:iptvcat.com')">
+        <div class="channel-icon" onclick="playChannel('https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8?checkedby:iptvcat.com')">
             <img src="https://i.imgur.com/1omi7p8.png" alt="Oman Sports TV (1080p)">
             <p>Oman Sports TV (1080p)</p>
         </div>
         <!-- قناة SCC1 -->
-        <div class="channel-icon" onclick="openChannel('http://gentv.pro:25461/853899731/freeiptvgen/19957493.ts')">
+        <div class="channel-icon" onclick="playChannel('http://gentv.pro:25461/853899731/freeiptvgen/19957493.ts')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/SCC_logo.png" alt="قناة SCC1">
             <p>قناة SCC1</p>
         </div>
     </div>
 
+    <div class="video-container">
+        <video id="videoPlayer" class="video-js vjs-default-skin" controls autoplay playsinline></video>
+    </div>
+
     <script>
-        function openChannel(url) {
-            window.open(url, '_blank'); // فتح البث المباشر في صفحة جديدة
+        function playChannel(url) {
+            var videoPlayer = document.getElementById("videoPlayer");
+            var videoContainer = document.querySelector(".video-container");
+
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(videoPlayer);
+                videoContainer.style.display = "block";
+                videoPlayer.play();
+            } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                videoPlayer.src = url;
+                videoContainer.style.display = "block";
+                videoPlayer.play();
+            }
         }
     </script>
 </body>
