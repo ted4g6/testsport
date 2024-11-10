@@ -10,23 +10,22 @@
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
-            background-color: #FFD700; /* خلفية ذهبية */
             margin: 0;
             color: #333;
-        }
-        h1 {
-            color: #4b0082;
-            text-align: center;
-            margin: 20px 0;
+            background-image: url('https://www.ahaleel.com/uploads/posts/9690915_vb7Cn6Cv16795705725085140.jpg');
+            background-size: cover;
+            background-position: center;
         }
         .channels-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            width: 80%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 90%;
             max-width: 800px;
-            margin: 20px auto;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* خلفية شفافة */
+            border-radius: 8px;
         }
         .channel-icon {
             display: flex;
@@ -37,73 +36,40 @@
             text-align: center;
         }
         .channel-icon img {
-            width: 100%;
-            max-width: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
         .channel-icon img:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
         .channel-icon p {
-            margin-top: 10px;
-            font-size: 16px;
+            margin-top: 8px;
+            font-size: 14px;
             color: #4b0082;
         }
-        .video-player {
-            width: 100%;
-            max-width: 800px;
-            height: 450px;
-            margin-top: 30px;
-            display: none;
-            border: none;
-        }
-        .video-player:fullscreen {
-            width: 100%;
-            height: 100vh;
-        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-
-    <h1>قنوات رياضية</h1>
-    
     <div class="channels-container">
         <!-- قناة 1 -->
-        <div class="channel-icon" onclick="playChannel('https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8?checkedby:iptvcat.com')">
-            <img src="https://i.imgur.com/1omi7p8.png" alt="Oman Sports TV (1080p) ">
-            <p>Oman Sports TV (1080p) </p>
+        <div class="channel-icon" onclick="openChannel('https://partneta.cdn.mgmlcdn.com/omsport/smil:omsport.stream.smil/chunklist.m3u8?checkedby:iptvcat.com')">
+            <img src="https://i.imgur.com/1omi7p8.png" alt="Oman Sports TV (1080p)">
+            <p>Oman Sports TV (1080p)</p>
         </div>
         <!-- قناة SCC1 -->
-        <div class="channel-icon" onclick="playChannel('http://gentv.pro:25461/853899731/freeiptvgen/19957493.ts')">
+        <div class="channel-icon" onclick="openChannel('http://gentv.pro:25461/853899731/freeiptvgen/19957493.ts')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/SCC_logo.png" alt="قناة SCC1">
             <p>قناة SCC1</p>
         </div>
     </div>
 
-    <video id="videoPlayer" class="video-player" controls autoplay></video>
-
     <script>
-        function playChannel(url) {
-            var videoPlayer = document.getElementById("videoPlayer");
-
-            if (Hls.isSupported()) {
-                var hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(videoPlayer);
-                videoPlayer.style.display = "block";
-                videoPlayer.play();
-                videoPlayer.requestFullscreen(); // تشغيل الفيديو في وضع ملء الشاشة
-            } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-                videoPlayer.src = url;
-                videoPlayer.style.display = "block";
-                videoPlayer.play();
-                videoPlayer.requestFullscreen(); // تشغيل الفيديو في وضع ملء الشاشة
-            }
+        function openChannel(url) {
+            window.open(url, '_blank'); // فتح البث المباشر في صفحة جديدة
         }
     </script>
-    
 </body>
 </html>
